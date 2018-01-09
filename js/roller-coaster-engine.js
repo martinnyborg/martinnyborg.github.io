@@ -8,7 +8,7 @@ $(document).ready(function() {
     var oldEarth = null;
     var toggleHoldingsInput = true;
 
-    var markets = []; // new Bitstamp(), new Bitfinex()
+    var markets = [new Coinmarketcap()]; // new Bitstamp(), new Bitfinex()
     var selectedMarketIndex = 0;
     var selectedMarket = markets[selectedMarketIndex];
 
@@ -30,32 +30,24 @@ $(document).ready(function() {
     }
 
     function moonTicker() {
-        mooningFunction(selectedMarket.getOpenPrice(), selectedMarket.getLatestPrice(), selectedMarketIndex);
+        mooningFunction(selectedMarket.getPercentage(), selectedMarket.getLatestPrice(), selectedMarketIndex);
     }
 
-    function mooningFunction(open, close, id) {
-        updateCurrentMoon(open, close);
-        updateStatus(open, close);
-        updateLabels(open, close);
-        updateTicker(open, close, id);
+    function mooningFunction(percentage, close, id) {
+        updateCurrentMoon(percentage, close);
+        updateStatus(percentage, close);
+        updateLabels(percentage, close);
+        updateTicker(percentage, close, id);
         updateHodlings(close);
     }
 
-    function updateCurrentMoon(open, close) {
+    function updateCurrentMoon(percentage, close) {
 
         if (currentMoon != close) {
-            oldEarth = open;
             currentMoon = close;
-
-            var change = currentMoon - oldEarth;
-
             $('#current-moon').html('$' + currentMoon + " USD");
             animateMoonElem($('#current-moon'));
-
-            var signal = change >= 0 ? '+' : '-';
-            $('#change-value').html(signal + Math.abs((change)).toFixed(2));
-            $('#change-percentage').html(signal + Math.abs((((currentMoon / oldEarth) - 1) * 100)).toFixed(2) + "%");
-
+            $('#change-percentage').html(percentage + "%");
             document.title = '(' + currentMoon + ')' + " Bitcoin Roller Coaster Guy";
             feeRequest();
         }
@@ -79,7 +71,7 @@ $(document).ready(function() {
         }
     }
 
-    function updateTicker(open, close, id) {
+    function updateTicker(percentage, close, id) {
         var tickerElem = $('#ticker-' + id);
         if (close != tickerElem.html()) {
             tickerElem.html(close);
@@ -95,14 +87,14 @@ $(document).ready(function() {
         }, 1000);
     }
 
-    function updateStatus(open, close) {
-        var angle = (Math.atan2(close - open, 20) * 180 / Math.PI);
+    function updateStatus(percentage, close) {
+        var angle = (Math.atan2(percentage, 20) * 180 / Math.PI);
         var randomNumber = getRandom(maximum);
         var rollerCoasterStatus = "";
         var changeAbs = Math.abs((currentMoon / oldEarth) - 1).toFixed(3);
         var changeTreshold = 0.008;
         
-        if(close>=100000){
+        if(close>=100){
             $('body').css('background-image', 'url(images/moon.gif');
         }else{
             $('body').css('background-image', 'url(images/what-if-its-a-space-rollercoaster.jpg');
@@ -136,8 +128,8 @@ $(document).ready(function() {
         });
     }
 
-    function updateLabels(open, close) {
-        if ((open - close) < 0) {
+    function updateLabels(percentage, close) {
+        if (percentage < 0) {
             $('.panel').removeClass("panel-danger").addClass("panel-success");
             $('.label').removeClass("label-danger").addClass("label-success");
         } else {
