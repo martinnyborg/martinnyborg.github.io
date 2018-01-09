@@ -47,10 +47,11 @@ class Coinmarketcap extends Market {
         super();
         this.apiAdrress = "https://api.coinmarketcap.com/v1/ticker/tron/";
         this.priceInfo = "Based on Bitfinex 24h timeframe";
-        this.id = 1;
+        this.id = 0;
     }
 
     runWebsocketTicker(updateTicker) {
+        var _this = this;
         $.getJSON('https://api.coinmarketcap.com/v1/ticker/tron/', function(data) {
             _this.latestPrice = data[0].price_usd;
             _this.percentage = data[0].percent_change_1h;
