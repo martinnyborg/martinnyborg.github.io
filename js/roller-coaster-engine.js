@@ -127,7 +127,7 @@ $(document).ready(function() {
     }
 
     function updateLabels(percentage, latest) {
-        if (percentage < 0) {
+        if (percentage >= 0) {
             $('.panel').removeClass("panel-danger").addClass("panel-success");
             $('.label').removeClass("label-danger").addClass("label-success");
         } else {
