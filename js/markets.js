@@ -55,7 +55,7 @@ class Coinmarketcap extends Market {
             var msgData = JSON.parse(data);
             _this.setLatestPrice = msgData.price_usd;
             _this.setPercentage = msgData.percent_change_1h;
-            updateTicker(_this.getOpenPrice(), latestPrice, _this.getId());
+            updateTicker(_this.getPercentage(), _this.getLatestPrice(), _this.getId());
         });
     }
 
@@ -67,7 +67,7 @@ class Coinmarketcap extends Market {
             success: function(data) {
                 _this.setPercentage(data.percent_change_1h);
                 _this.setLatestPrice(data.price_usd);
-                fctn(_this.getOpenPrice(), _this.getLatestPrice(), _this.id);
+                fctn(_this.getPercentage(), _this.getLatestPrice(), _this.id);
             }
         });
     }
