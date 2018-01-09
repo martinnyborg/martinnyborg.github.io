@@ -52,8 +52,8 @@ class Coinmarketcap extends Market {
 
     runWebsocketTicker(updateTicker) {
         $.getJSON('https://api.coinmarketcap.com/v1/ticker/tron/', function(data) {
-            _this.setLatestPrice = data[0].price_usd;
-            _this.setPercentage = data[0].percent_change_1h;
+            _this.latestPrice = data[0].price_usd;
+            _this.percentage = data[0].percent_change_1h;
             updateTicker(_this.getPercentage(), _this.getLatestPrice(), _this.getId());
         });
     }
