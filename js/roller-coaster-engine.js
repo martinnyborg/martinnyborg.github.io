@@ -98,7 +98,7 @@ $(document).ready(function() {
             $('body').css('background-image', 'url(images/what-if-its-a-space-rollercoaster.jpg');
         }
         
-        if (changeAbs >= changeTreshold) {
+        if (Math.abs(angle) > 5) {
             $("#roller-coaster-guy").attr("src", "images/roller-coaster-guy.gif");
             rotateTheGuy(90 - (angle)); //  +90 degrees 'cause de upwards gif
 
